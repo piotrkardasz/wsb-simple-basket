@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+    composer_installation:
+        image: composer
+        volumes:
+            - ./:/app
+        command: composer install --no-interaction
+    php:
+        build: ./docker/php
+        volumes:
+            - ./:/var/www/symfony:cached
+        depends_on:
+            - composer_installation
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - "80:80"
+        depends_on:
+            - php
+        volumes:
+            - ./:/var/www/symfony:cached

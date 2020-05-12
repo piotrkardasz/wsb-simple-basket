@@ -99,6 +99,11 @@ class BasketController extends AbstractController
      */
     public function addToBasket(Request $request, ProductRepository $productRepository){
         $quantity = $request->get('quantity') ?? 1;
+        if ($quantity < 1)
+        {
+            $this->addFlash('basket', 'Product quantity can not be less then 1');
+            return $this->redirectToRoute('base');
+        }
         $product = $productRepository->findOneBy(['id' => $request->get('product')]);
 
         if (!$product instanceof Product)
