@@ -1,0 +1,8 @@
+.app-button {
+    width: 5em;
+    display: inline-block;
+}
+.bg-gray{
+    background: #fafafa;
+    border: 1px dotted #232323;
+}

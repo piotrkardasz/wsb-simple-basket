@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if orders | length > 0 %}
+            <div class="cart">
+                <div class="card table-responsive d-flex flex-wrap border-0 pt-3 pb-3">
+                    <h1 class="well text-center font-weight-light">List of placed orders ({{ orders | length }})</h1>
+                </div>
+            </div>
+            {% for order in orders %}
+
+                <div class="row mb-2 bg-gray">
+                    <div class="col col-sm-12">
+                        <h3>Order #{{ order.id }}</h3>
+                    </div>
+                    {% set value = 0 %}
+                    {% for element in order.elements %}
+
+                        <div class="card col col-sm-12 col-md-4 p-0">
+                            <h5 class="card-header bg-success text-white">{{ element.product.name }}</h5>
+                            <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <p class="card-text"><strong>Quantity</strong> {{ element.quantity }}</p>
+                                <p class="card-text"><strong>Price per
+                                        unit:</strong> {{ element.product.price |  intToCurrency | format_currency('PLN', {fraction_digit: 2}) }}
+                                </p>
+                                <p class="card-text"><strong>Sub
+
+                                        {% set value = value + element.product.price * element.quantity %}
+                                        sum:</strong> {{ (element.product.price * element.quantity | intToCurrency) | format_currency('PLN', {fraction_digit: 2}) }}
+                                </p>
+                                <p></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="col col-sm-12">
+                        <h2>Order
+                            value {{ (value | intToCurrency) | format_currency('PLN', {fraction_digit: 2}) }}</h2>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="cart">
+                <div class="card table-responsive d-flex flex-wrap border-0 pt-3 pb-3">
+                    <h1 class="well text-center font-weight-light">No orders found! :< </h1>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
