@@ -40,13 +40,22 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="row mb-3 d-flex justify-content-between mt-4 bg-gray">
-            <a href="{{ url('clear') }}" class="btn btn-danger">Clear <i class="fa fa-times" aria-hidden="true"></i></a>
-            <div class="text-black">
-                <strong>Sum: {{ (total | intToCurrency) | format_currency('PLN', {fraction_digit: 2}) }}</strong></div>
-            <a href="{{ url('order') }}" class="btn btn-success">Order <i class="fa fa-arrow-circle-right"
-                                                                          aria-hidden="true"></i></a>
-        </div>
+        {#        <div class="row mb-3 d-flex justify-content-between mt-4 bg-gray">#}
+        {{ form_start(paymentForm,  {'attr': {'class': 'row mb-3 d-flex justify-content-between mt-4 bg-gray'}}) }}
+        <a href="{{ url('clear') }}" class="btn btn-danger">Clear <i class="fa fa-times" aria-hidden="true"></i></a>
+
+
+        {{ form_errors(paymentForm) }}
+        {{ form_row(paymentForm.paymentOption) }}
+
+        <div class="text-black">
+            <strong>Sum: {{ (total | intToCurrency) | format_currency('PLN', {fraction_digit: 2}) }}</strong></div>
+{#        <a href="{{ url('order') }}" class="btn btn-success">Order <i class="fa fa-arrow-circle-right"#}
+{#                                                                      aria-hidden="true"></i></a>#}
+        <button type="submit" class="btn btn-success">Order <i class="fa fa-arrow-circle-right"
+                                                                aria-hidden="true"></i></button>
+        {{ form_end(paymentForm) }}
+        {#        </div>#}
         <div class="row"><p><a href="{{ url('base') }}">Back to shop</a></p></div>
 
     {% else %}

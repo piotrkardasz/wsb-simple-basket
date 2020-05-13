@@ -1,5 +1,5 @@
 #https://github.com/docker-library/php/blob/affbdaf1386876560e287cd7708fafe2a4d246eb/7.3/buster/fpm/Dockerfile
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 #https://github.com/docker-library/docs/blob/master/php/README.md#pecl-extensions
 RUN set -eux; \

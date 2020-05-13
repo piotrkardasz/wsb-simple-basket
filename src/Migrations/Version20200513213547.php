@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200512202324 extends AbstractMigration
+final class Version20200513213547 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -26,10 +26,13 @@ final class Version20200512202324 extends AbstractMigration
         $this->addSql('CREATE TABLE basket_element (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, basket_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER DEFAULT 1 NOT NULL)');
         $this->addSql('CREATE INDEX IDX_85E74E201BE1FB52 ON basket_element (basket_id)');
         $this->addSql('CREATE INDEX IDX_85E74E204584665A ON basket_element (product_id)');
-        $this->addSql('CREATE TABLE orders (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)');
+        $this->addSql('CREATE TABLE orders (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, payment INTEGER NOT NULL)');
         $this->addSql('CREATE TABLE order_element (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product_id INTEGER NOT NULL, shop_order_id INTEGER NOT NULL, price INTEGER NOT NULL, quantity INTEGER NOT NULL)');
         $this->addSql('CREATE INDEX IDX_B73AF7724584665A ON order_element (product_id)');
         $this->addSql('CREATE INDEX IDX_B73AF772562797AE ON order_element (shop_order_id)');
+        $this->addSql('CREATE TABLE codpayment_method (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE payu_payment_method (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, service_url VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE przelewy24_payment_method (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, service_wsdl_url VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, price INTEGER NOT NULL)');
     }
 
@@ -42,6 +45,9 @@ final class Version20200512202324 extends AbstractMigration
         $this->addSql('DROP TABLE basket_element');
         $this->addSql('DROP TABLE orders');
         $this->addSql('DROP TABLE order_element');
+        $this->addSql('DROP TABLE codpayment_method');
+        $this->addSql('DROP TABLE payu_payment_method');
+        $this->addSql('DROP TABLE przelewy24_payment_method');
         $this->addSql('DROP TABLE product');
     }
 }

@@ -25,6 +25,11 @@ class Order
      */
     private $elements;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $payment;
+
     public function __construct()
     {
         $this->elements = new ArrayCollection();
@@ -62,6 +67,18 @@ class Order
                 $element->setShopOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPayment(): ?int
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(int $payment): self
+    {
+        $this->payment = $payment;
 
         return $this;
     }

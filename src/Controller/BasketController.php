@@ -7,6 +7,7 @@ use App\Entity\BasketElement;
 use App\Entity\Order;
 use App\Entity\OrderElement;
 use App\Entity\Product;
+use App\Form\PaymentType;
 use App\Repository\BasketRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,12 +60,36 @@ class BasketController extends AbstractController
     /**
      * @Route("/basket", name="basket")
      */
-    public function index()
+    public function index(Request $request)
     {
+        $form = $this->createForm(PaymentType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $order = new Order();
+            $order->setPayment($form->getData()['paymentOption']);
+            foreach ($this->basket->getElements() as $basketElement)
+            {
+                /** @var Product $product */
+                $product = $basketElement->getProduct();
+                $orderElement = new OrderElement($product);
+                $orderElement
+                    ->setPrice($product->getPrice())
+                    ->setQuantity($basketElement->getQuantity());
+                $order->addElement($orderElement);
+            }
+            $this->entityManager->persist($order);
+            $this->entityManager->flush();
+            $this->session->remove(self::BASKET_KEY);
+
+            return $this->redirectToRoute('order_list');
+
+        }
         return $this->render('basket/index.html.twig', [
             'controller_name' => 'BasketController',
             'basket' => $this->basket,
-            'total' => $this->basketValue()
+            'total' => $this->basketValue(),
+            'paymentForm' => $form->createView()
         ]);
     }
 
@@ -134,30 +159,6 @@ class BasketController extends AbstractController
         }
 
         return $sum;
-    }
-
-    /**
-     * @Route("/basket/order", name="order")
-     */
-    public function convertToOrder()
-    {
-        $order = new Order();
-
-        foreach ($this->basket->getElements() as $basketElement)
-        {
-            /** @var Product $product */
-            $product = $basketElement->getProduct();
-            $orderElement = new OrderElement($product);
-            $orderElement
-                ->setPrice($product->getPrice())
-                ->setQuantity($basketElement->getQuantity());
-            $order->addElement($orderElement);
-        }
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-        $this->session->remove(self::BASKET_KEY);
-
-        return $this->redirectToRoute('order_list');
     }
 
 }

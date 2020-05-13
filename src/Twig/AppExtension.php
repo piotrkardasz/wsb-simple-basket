@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Form\PaymentType;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -22,11 +23,17 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('intToCurrency', [$this, 'intToCurrency']),
+            new TwigFunction('intToPayment', [$this, 'intToPayment']),
         ];
     }
 
     public function intToCurrency(int $value)
     {
         return $value / 100;
+    }
+
+    public function intToPayment(int $value): string
+    {
+        return PaymentType::paymentOptions()[$value];
     }
 }

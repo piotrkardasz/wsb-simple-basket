@@ -4,7 +4,7 @@ services:
         image: composer
         volumes:
             - ./:/app
-        command: composer install --no-interaction
+        command: composer install --no-interaction  --ignore-platform-reqs
     php:
         build: ./docker/php
         volumes:

@@ -14,7 +14,7 @@
 
                 <div class="row mb-2 bg-gray">
                     <div class="col col-sm-12">
-                        <h3>Order #{{ order.id }}</h3>
+                        <h3>Order #{{ order.id }}</h3> <strong>Payment: </strong><small>{{ intToPayment(order.payment) }}</small>
                     </div>
                     {% set value = 0 %}
                     {% for element in order.elements %}
